@@ -1,0 +1,116 @@
+<template>
+
+    <lightning-card title="BALANCE TRANFER BETWEEN SAME TAX NUMBER ACCOUNTS" icon-name="custom:custom108">
+        <template if:true={account.data}>
+            <div style="display: flex; ">
+                <div class="slds-m-around_medium" style="width: 50%">
+                    <p class="slds-text-heading_medium">FROM THIS ACCOUNT:</p>
+                    <p class="accountName">Account Name: {name}</p>
+                    <p class="">Tax Number: {taxNumber}</p>
+                    <p>Balance Amount: {balance}</p>
+                    <lightning-input label="Tranfer Balance Amount" value={transferAmount}
+                        onchange={changeTransferHandler}></lightning-input>
+                    <p>Balance After Transfer : {fbalance}</p>
+                </div>
+                <div class="slds-m-around_medium" style="width: 50%">
+
+                    <div if:true={selectedAccount} class="slds-m-around_medium" style="width: 50%">
+                        <p class="slds-text-heading_medium">TO THIS ACCOUNT:</p>
+                        <p class="accountName">Account Name: {selectedAccountName}</p>
+                        <p class="">Tax Number: {selectedAccountTaxNumber}</p>
+                        <p class="">Balance Amount Before Transfer : {selectedAccountBalance}</p>
+
+                    </div>
+
+                    <lightning-card icon-name="utility:connected_apps" title="Search Account">
+                        <lightning-spinner if:true={isLoading} alternative-text="Loading" size="small">
+                        </lightning-spinner>
+                        <div class="slds-form-element">
+                            <div class="slds-p-horizontal_medium">
+                                <lightning-input type="text" onchange={handleInputChange} placeholder={placeholder}>
+                                </lightning-input>
+                            </div>
+                            <ul class="slds-listbox slds-listbox_vertical">
+                                <template if:true={searchRecords} for:each={searchRecords} for:item="record"
+                                    for:index="index">
+                                    <li class="slds-listbox__item" data-record-id={record.Id} key={record.Id}>
+                                        <div data-id={record.Id}
+                                            class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                            role="option">
+                                            <span class="slds-media__figure slds-listbox__option-icon">
+                                                <span class="slds-icon_container slds-icon-standard-account">
+                                                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                                        <use xlink:href={ICON_URL}></use>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                            <span class="slds-media__body">
+                                                <span class="">
+                                                    {record.FIELD1}
+                                                </span>
+                                            </span>
+                                            <span>
+                                                <lightning-button label="Select" title="Download action"
+                                                    value={record.Id} class="slds-m-left_x-small"
+                                                    onclick={setSelectedAccount}>
+                                                </lightning-button>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </lightning-card>
+
+
+                </div>
+
+            </div>
+        </template>
+
+        <template if:true={account.error}>
+            <p>No account found.</p>
+        </template>
+    </lightning-card>
+
+    <lightning-button label="Save" title="Save Action" class="slds-m-left_x-small" onclick={saveTransfer}>
+    </lightning-button>
+
+    <div class="slds-box slds-theme_default">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+            <thead>
+                <tr>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Account Name">Name</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Account Number">Account Number</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Tax Number">Tax Number</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="UPDATED BALANCE AMOUNT">UPDATED BALANCE AMOUNT</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{name}</td>
+                    <td>{anumber}</td>
+                    <td>{taxNumber}</td>
+                    <td>{fbalance}</td>
+                </tr>
+                <tr>
+                    <td>{selectedAccountName}</td>
+                    <td>{selectedAccountNumber}</td>
+                    <td>{selectedAccountTaxNumber}</td>
+                    <td>{selectedAccountFinalBalance}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+</template>
